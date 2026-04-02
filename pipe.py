@@ -8,12 +8,10 @@ class Pipe:
 
         self.image = pygame.image.load('assets/images/pipe.png')
         self.image = pygame.transform.scale(self.image, (width, height))
-        if direction == 180:
-            self.image = pygame.transform.flip(self.image, False, True)
+        self.image= pygame.transform.rotate(self.image, self.direction)
         self.mask = pygame.mask.from_surface(self.image)
         self.rect = self.image.get_rect(topleft=(self.x, self.y))
-
     def update(self,speed):
         self.x -= speed
-        self.mask = pygame.mask.from_surface(self.image)
-        self.rect = self.image.get_rect(topleft=(self.x, self.y))
+        self.rect = pygame.Rect(self.x, self.y, self.image.get_width(), self.image.get_height())
+

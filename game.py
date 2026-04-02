@@ -71,12 +71,14 @@ class Game:
         if self.pipe_timer >= self.pipe_interval:
             self.pipe_timer = 0
 
-            gap = 150
-            pipe_height_haut = random.randint(100, 350)  # varie
-            pipe_height_bas = 600 - gap - pipe_height_haut  # s'adapte automatiquement
+            gap = 325
+            pipe_y = random.randint(0, 250)
 
-            self.pipe_contener.append(Pipe(800, 0, 75, pipe_height_haut, 180))  # collé en haut
-            self.pipe_contener.append(Pipe(800, pipe_height_haut + gap, 75, pipe_height_bas, 0))  # collé en bas
+            self.pipe_contener.append(Pipe(800, pipe_y-gap, 75, 400,180))  # collé en haut
+            self.pipe_contener.append(Pipe(800, pipe_y+gap, 75, 400,0))  # collé en bas
+
+            print(pipe_y+350)
+
 
         for pipe in self.pipe_contener:
             pipe.update(self.speed)
