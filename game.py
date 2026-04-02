@@ -1,5 +1,6 @@
 import pygame
 from bird import Bird
+from pipe import Pipe
 
 class Game:
     def __init__(self):
@@ -12,9 +13,14 @@ class Game:
         self.bird_co = (0, 0)
         self.bird = Bird(self.bird_co)
 
+        #Gestion tuyau
+        self.pipe_contener = []
+        self.pipe_timer = 0
+        self.pipe_interval = 90
 
         #Gestion jeu
         self.gravity = 0.5
+        self.speed = 5
 
 
     def run(self):
@@ -34,8 +40,31 @@ class Game:
     def update(self):
         self.screen.fill((100, 100, 100))
 
+        #Joueur
+        self.update_joueur()
+
+        # Tuyaux
+        self.update_pipes()
+
+
+
+        pygame.display.flip()
+
+    def update_joueur(self):
         self.bird.velocity += self.gravity
         self.bird.update()
-
         self.screen.blit(self.bird.image, (self.bird.x, self.bird.y))
-        pygame.display.flip()
+
+    def update_pipes(self):
+        self.pipe_timer += 1
+        print(self.pipe_timer)
+        if self.pipe_timer >= self.pipe_interval:
+            self.pipe_timer = 0
+            self.pipe_contener.append(Pipe(800, 350, 200, 300, 0))  # spawn à droite de l'écran
+
+        for pipe in self.pipe_contener:
+            pipe.update(self.speed)
+            self.screen.blit(pipe.image, (pipe.x, pipe.y))
+
+        # Supprimer les tuyaux sortis de l'écran
+        self.pipe_contener = [p for p in self.pipe_contener if p.x > -200]
