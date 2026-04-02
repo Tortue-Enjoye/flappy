@@ -56,6 +56,7 @@ class Game:
         # Tuyaux
         self.update_pipes()
 
+        self.collision()
 
 
         pygame.display.flip()
@@ -67,10 +68,15 @@ class Game:
 
     def update_pipes(self):
         self.pipe_timer += 1
-        print(self.pipe_timer)
         if self.pipe_timer >= self.pipe_interval:
             self.pipe_timer = 0
-            self.pipe_contener.append(Pipe(800, 350, 200, 300, 0))  # spawn à droite de l'écran
+
+            gap = 150
+            pipe_height_haut = random.randint(100, 350)  # varie
+            pipe_height_bas = 600 - gap - pipe_height_haut  # s'adapte automatiquement
+
+            self.pipe_contener.append(Pipe(800, 0, 75, pipe_height_haut, 180))  # collé en haut
+            self.pipe_contener.append(Pipe(800, pipe_height_haut + gap, 75, pipe_height_bas, 0))  # collé en bas
 
         for pipe in self.pipe_contener:
             pipe.update(self.speed)
@@ -80,17 +86,26 @@ class Game:
         self.pipe_contener = [p for p in self.pipe_contener if p.x > -200]
 
     def update_cloud(self):
-        y = random.randint(0, 250)
-        width = random.randint(150, 200)
-        height = random.randint(50, 100)
-        interval = random.randint(90,120)
+        interval = random.randint(90, 120)
         self.cloud_timer += 1
         if self.cloud_timer >= interval:
+            y = random.randint(0, 250)
+            width = random.randint(150, 200)
+            height = random.randint(50, 100)
             self.cloud_timer = 0
             self.cloud_contener.append(Cloud(800,y,width,100))
+            self.cloud_contener.append(Cloud(800,y,width,100))
+
 
         for cloud in self.cloud_contener:
             cloud.update(self.speed)
             self.screen.blit(cloud.image, (cloud.x, cloud.y))
 
         self.cloud_contener = [c for c in self.cloud_contener if c.x > -200]
+
+
+    def collision(self):
+        for pipe in self.pipe_contener:
+            offset = (int(pipe.x - self.bird.x), int(pipe.y - self.bird.y))
+            if self.bird.mask.overlap(pipe.mask, offset):
+                print('Touche')
