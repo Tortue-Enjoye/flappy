@@ -15,6 +15,7 @@ class Game:
         #Gestion joueur
         self.bird_co = (0, 0)
         self.bird = Bird(self.bird_co)
+        self.c_cooldown = 60
 
         #Gestion tuyau
         self.pipe_contener = []
@@ -25,6 +26,10 @@ class Game:
         self.cloud_contener = []
         self.cloud_timer = 0
 
+        #Gestion de la vie
+        self.health = 3
+        self.health_image = pygame.image.load('assets/images/health.png')
+        self.health_image = pygame.transform.scale(self.health_image, (50, 45))
 
         #Gestion jeu
         self.gravity = 0.5
@@ -58,6 +63,9 @@ class Game:
 
         self.collision()
 
+        self.health_bar()
+
+        self.c_cooldown += 1
 
         pygame.display.flip()
 
@@ -109,5 +117,10 @@ class Game:
     def collision(self):
         for pipe in self.pipe_contener:
             offset = (int(pipe.x - self.bird.x), int(pipe.y - self.bird.y))
-            if self.bird.mask.overlap(pipe.mask, offset):
-                print('Touche')
+            if self.bird.mask.overlap(pipe.mask, offset) and self.c_cooldown >= 60:
+                self.health -= 1
+                self.c_cooldown = 0
+
+    def health_bar(self):
+        for i in range (0,self.health):
+            self.screen.blit(self.health_image,(625+i*55,20))
