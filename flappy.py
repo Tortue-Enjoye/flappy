@@ -5,6 +5,7 @@ import random
 from bird import Bird
 from pipe import Pipe
 from cloud import Cloud
+from scoreboard import Scoreboard
 
 class Flappy():
     def __init__(self,screen,clock):
@@ -134,6 +135,7 @@ class Flappy():
                 self.c_cooldown = 0
                 if self.health == 0:
                     self.frozen_screen = self.screen.copy()
+                    Scoreboard.save_score(self.score)
 
     def health_bar(self):
         for i in range (0,self.health):
