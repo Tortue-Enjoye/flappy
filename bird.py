@@ -16,7 +16,7 @@ class Bird():
         self.velocity = 0
 
     def move(self):
-        self.velocity = -15
+        self.velocity = -14
 
 
     def update(self):
