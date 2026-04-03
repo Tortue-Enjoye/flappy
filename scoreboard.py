@@ -1,14 +1,16 @@
 import pygame
 import json
 import os
+from utils import resource_path
+
 
 class Scoreboard:
     def __init__(self, screen, clock):
         self.screen = screen
         self.clock = clock
-        self.font = pygame.font.Font("assets/fonts/JetBrainsMono-Bold.ttf", 48)
-        self.font_small = pygame.font.Font("assets/fonts/JetBrainsMono-Bold.ttf", 32)
-        self.font_hover = pygame.font.Font("assets/fonts/JetBrainsMono-Bold.ttf", 42)
+        self.font = pygame.font.Font(resource_path("assets/fonts/JetBrainsMono-Bold.ttf"), 48)
+        self.font_small = pygame.font.Font(resource_path("assets/fonts/JetBrainsMono-Bold.ttf"), 32)
+        self.font_hover = pygame.font.Font(resource_path("assets/fonts/JetBrainsMono-Bold.ttf"), 42)
         self.back_rect = pygame.Rect(0, 0, 0, 0)
         self.scores = self.load_scores()
 

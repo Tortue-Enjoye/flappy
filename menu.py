@@ -1,20 +1,22 @@
 # menu.py
 import pygame
+from utils import resource_path
+
 
 class Menu:
     def __init__(self, screen, clock):
         self.screen = screen
         self.clock = clock
-        self.font = pygame.font.Font("assets/fonts/JetBrainsMono-Bold.ttf", 72)
-        self.font_small = pygame.font.Font("assets/fonts/JetBrainsMono-Bold.ttf", 48)
-        self.font_hover = pygame.font.Font("assets/fonts/JetBrainsMono-Bold.ttf", 64)
+        self.font = pygame.font.Font(resource_path("assets/fonts/JetBrainsMono-Bold.ttf"), 72)
+        self.font_small = pygame.font.Font(resource_path("assets/fonts/JetBrainsMono-Bold.ttf"), 48)
+        self.font_hover = pygame.font.Font(resource_path("assets/fonts/JetBrainsMono-Bold.ttf"), 64)
 
-        self.image_bird = pygame.image.load('assets/images/bird.png')
+        self.image_bird = pygame.image.load(resource_path('assets/images/bird.png'))
         self.image_bird = pygame.transform.scale(self.image_bird, (100, 100))
         self.image_bird_inverted = pygame.transform.flip(self.image_bird, True, False)
         self.timer_anim = 0
 
-        self.image_footer = pygame.image.load('assets/images/cloud_footer.png')
+        self.image_footer = pygame.image.load(resource_path('assets/images/cloud_footer.png'))
 
         self.play_rect = pygame.Rect(0, 0, 0, 0)
         self.score_rect = pygame.Rect(0, 0, 0, 0)

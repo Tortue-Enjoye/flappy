@@ -1,6 +1,8 @@
 import pygame
 
 import random
+from utils import resource_path
+
 
 from bird import Bird
 from pipe import Pipe
@@ -28,19 +30,19 @@ class Flappy():
 
         # Gestion de la vie
         self.health = 3
-        self.health_image = pygame.image.load('assets/images/health.png')
+        self.health_image = pygame.image.load(resource_path('assets/images/health.png'))
         self.health_image = pygame.transform.scale(self.health_image, (50, 45))
 
         # Gestion jeu
         self.gravity = 0.5
         self.speed = 5
-        self.game_over_image = pygame.image.load('assets/images/GameOver.png')
+        self.game_over_image = pygame.image.load(resource_path('assets/images/GameOver.png'))
         self.game_over_image = pygame.transform.scale(self.game_over_image, (300, 150))
         self.frozen_screen = self.screen.copy()
 
         # Gestion du score
         self.score = 0
-        self.score_font = pygame.font.Font("assets/fonts/JetBrainsMono-Bold.ttf", 48)
+        self.score_font = pygame.font.Font(resource_path("assets/fonts/JetBrainsMono-Bold.ttf"), 48)
 
 
     def update(self):

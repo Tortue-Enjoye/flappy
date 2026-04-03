@@ -1,11 +1,13 @@
 import pygame
+from utils import resource_path
+
 
 class Bird():
     def __init__(self, bird_co):
         self.x = bird_co[0]
         self.y = bird_co[1]
 
-        self.image = pygame.image.load('assets/images/bird.png')
+        self.image = pygame.image.load(resource_path('assets/images/bird.png'))
         self.image = pygame.transform.scale(self.image, (100, 100))
         self.mask = pygame.mask.from_surface(self.image)
         self.rect = self.image.get_rect(topleft=(self.x, self.y))

@@ -1,4 +1,6 @@
 import pygame
+from utils import resource_path
+
 
 class Pipe:
     def __init__(self,x,y,width,height,direction):
@@ -7,7 +9,7 @@ class Pipe:
         self.direction = direction
         self.passed = False
 
-        self.image = pygame.image.load('assets/images/pipe.png')
+        self.image = pygame.image.load(resource_path('assets/images/pipe.png'))
         self.image = pygame.transform.scale(self.image, (width, height))
         self.image= pygame.transform.rotate(self.image, self.direction)
         self.mask = pygame.mask.from_surface(self.image)
