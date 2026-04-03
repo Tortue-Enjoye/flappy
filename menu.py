@@ -9,7 +9,15 @@ class Menu:
         self.font_small = pygame.font.Font("assets/fonts/JetBrainsMono-Bold.ttf", 48)
         self.font_hover = pygame.font.Font("assets/fonts/JetBrainsMono-Bold.ttf", 64)
 
+        self.image_bird = pygame.image.load('assets/images/bird.png')
+        self.image_bird = pygame.transform.scale(self.image_bird, (100, 100))
+        self.image_bird_inverted = pygame.transform.flip(self.image_bird, True, False)
+        self.timer_anim = 0
+
+        self.image_footer = pygame.image.load('assets/images/cloud_footer.png')
+
         self.play_rect = pygame.Rect(0, 0, 0, 0)
+        self.score_rect = pygame.Rect(0, 0, 0, 0)
         self.quit_rect = pygame.Rect(0, 0, 0, 0)
 
     def run(self):
@@ -22,18 +30,23 @@ class Menu:
                         return True
                     if self.quit_rect.collidepoint(event.pos):
                         return False
+                    if self.score_rect.collidepoint(event.pos):
+                        return 'score'
 
             self.draw()
+
             self.clock.tick(60)
 
     def draw(self):
+
         self.screen.fill((144, 213, 255))
+        self.timer_anim += 1
 
         mouse_pos = pygame.mouse.get_pos()
 
         # Titre
         title = self.font.render("Flappy Bird", True, (0, 76, 153))
-        self.screen.blit(title, (400 - title.get_width() // 2, 150))
+        self.screen.blit(title, (400 - title.get_width() // 2, 100))
 
         # Bouton Jouer
         if self.play_rect.collidepoint(mouse_pos):
@@ -41,8 +54,17 @@ class Menu:
         else:
             play_text = self.font_small.render("Jouer", True, (0, 0, 0))
 
-        self.play_rect = play_text.get_rect(center=(400, 320))
+        self.play_rect = play_text.get_rect(center=(400, 250))
         self.screen.blit(play_text, self.play_rect)
+
+        # Bouton score
+        if self.score_rect.collidepoint(mouse_pos):
+            score_text = self.font_hover.render("Scores", True, (0, 76, 153))
+        else:
+            score_text = self.font_small.render("Scores", True, (0, 0, 0))
+
+        self.score_rect = score_text.get_rect(center=(400, 320))
+        self.screen.blit(score_text, self.score_rect)
 
         # Bouton Quitter
         if self.quit_rect.collidepoint(mouse_pos):
@@ -53,4 +75,19 @@ class Menu:
         self.quit_rect = quit_text.get_rect(center=(400, 390))
         self.screen.blit(quit_text, self.quit_rect)
 
+        self.screen.blit(self.image_footer, (-20, 300))
+
+        if (self.timer_anim // 45) % 2 == 0:
+            self.draw_bird(self.image_bird,0,0,0)
+            self.draw_bird(self.image_bird_inverted,0,690,0)
+
+        else :
+            self.draw_bird(self.image_bird,45,-10,0)
+            self.draw_bird(self.image_bird_inverted,-45,670,0)
+
         pygame.display.flip()
+
+    def draw_bird(self,image,angle,x,y):
+        rotated = pygame.transform.rotate(image, angle)
+        self.screen.blit(rotated, (x, y))
+

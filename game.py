@@ -22,6 +22,9 @@ class Game:
             if result == "quit":
                 break
 
+            if result == "score":
+
+
         pygame.quit()
 
         pygame.quit()
