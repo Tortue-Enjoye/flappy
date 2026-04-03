@@ -37,6 +37,10 @@ class Flappy():
         self.game_over_image = pygame.transform.scale(self.game_over_image, (300, 150))
         self.frozen_screen = self.screen.copy()
 
+        # Gestion du score
+        self.score = 0
+        self.score_font = pygame.font.SysFont(None, 48)
+
 
     def update(self):
         self.screen.fill((144, 213, 255))
@@ -60,6 +64,10 @@ class Flappy():
 
             self.health_bar()
 
+            self.draw_score()
+
+
+
             self.c_cooldown += 1
         else:
             self.game_over()
@@ -82,6 +90,14 @@ class Flappy():
             self.pipe_contener.append(Pipe(800, pipe_y-gap, 75, 400,180))  # collé en haut
             self.pipe_contener.append(Pipe(800, pipe_y+gap, 75, 400,0))  # collé en bas
 
+        for pipe in self.pipe_contener:
+            if not pipe.passed and pipe.x + 75 < self.bird.x and pipe.direction == 0:
+                pipe.passed = True
+                self.score += 1
+
+                if self.speed < 25 and self.score % 2 == 0:
+                    self.speed += 1
+                    print(self.speed)
 
 
         for pipe in self.pipe_contener:
@@ -127,6 +143,13 @@ class Flappy():
     def game_over(self):
         self.screen.blit(self.frozen_screen, (0, 0))
         self.screen.blit(self.game_over_image, (250, 200))
+
+        text = self.score_font.render(f"Score : {self.score}", True, (255, 255, 255))
+        self.screen.blit(text, (400 - text.get_width() // 2, 370))
+
+    def draw_score(self):
+        text = self.score_font.render(str(self.score), True, (255, 255, 255))
+        self.screen.blit(text, (400 - text.get_width() // 2, 30))
 
     def run(self):
         while True:

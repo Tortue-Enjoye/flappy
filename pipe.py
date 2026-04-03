@@ -5,6 +5,7 @@ class Pipe:
         self.x = x
         self.y = y
         self.direction = direction
+        self.passed = False
 
         self.image = pygame.image.load('assets/images/pipe.png')
         self.image = pygame.transform.scale(self.image, (width, height))
