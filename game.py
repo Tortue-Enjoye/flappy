@@ -8,6 +8,13 @@ from scoreboard import Scoreboard
 class Game:
     def __init__(self):
         pygame.init()
+
+        import ctypes
+        ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID("flappy.bird.game")
+
+        icon = pygame.image.load("assets/images/cloud.png")
+        pygame.display.set_icon(icon)
+        pygame.display.set_caption("Flappy Bird")
         self.screen = pygame.display.set_mode((800, 600))
         self.clock = pygame.time.Clock()
 

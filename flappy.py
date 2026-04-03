@@ -98,8 +98,7 @@ class Flappy():
 
                 if self.speed < 25 and self.score % 20 == 0:
                     self.speed += 1
-                    print(self.speed)
-
+                    self.pipe_interval = int(90 * (5 / self.speed))
 
         for pipe in self.pipe_contener:
             pipe.update(self.speed)
