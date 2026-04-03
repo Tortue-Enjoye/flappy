@@ -56,7 +56,14 @@ class Game:
         self.update_cloud()
 
         #Joueur
-        self.update_joueur()
+        if self.c_cooldown >=60:
+            self.update_joueur()
+        else:
+            if (self.c_cooldown // 5) % 2 == 0:  # clignote toutes les 5 frames
+                self.update_joueur()
+            else:
+                self.bird.velocity += self.gravity
+                self.bird.update()
 
         # Tuyaux
         self.update_pipes()
@@ -85,7 +92,6 @@ class Game:
             self.pipe_contener.append(Pipe(800, pipe_y-gap, 75, 400,180))  # collé en haut
             self.pipe_contener.append(Pipe(800, pipe_y+gap, 75, 400,0))  # collé en bas
 
-            print(pipe_y+350)
 
 
         for pipe in self.pipe_contener:
