@@ -5,8 +5,8 @@ class Menu:
     def __init__(self, screen, clock):
         self.screen = screen
         self.clock = clock
-        self.font = pygame.font.SysFont(None, 72)
-        self.font_small = pygame.font.SysFont(None, 36)
+        self.font = pygame.font.Font("assets/fonts/JetBrainsMono-Bold.ttf", 72)
+        self.font_small = pygame.font.Font("assets/fonts/JetBrainsMono-Bold.ttf", 36)
 
     def run(self):
         while True:

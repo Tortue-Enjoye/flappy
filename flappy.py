@@ -39,7 +39,7 @@ class Flappy():
 
         # Gestion du score
         self.score = 0
-        self.score_font = pygame.font.SysFont(None, 48)
+        self.score_font = pygame.font.Font("assets/fonts/JetBrainsMono-Bold.ttf", 48)
 
 
     def update(self):
@@ -95,7 +95,7 @@ class Flappy():
                 pipe.passed = True
                 self.score += 1
 
-                if self.speed < 25 and self.score % 2 == 0:
+                if self.speed < 25 and self.score % 20 == 0:
                     self.speed += 1
                     print(self.speed)
 
@@ -148,8 +148,8 @@ class Flappy():
         self.screen.blit(text, (400 - text.get_width() // 2, 370))
 
     def draw_score(self):
-        text = self.score_font.render(str(self.score), True, (255, 255, 255))
-        self.screen.blit(text, (400 - text.get_width() // 2, 30))
+        text = self.score_font.render(str(self.score), True, (0, 76, 153))
+        self.screen.blit(text, (50-text.get_width() // 2, 30))
 
     def run(self):
         while True:
