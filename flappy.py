@@ -127,3 +127,17 @@ class Flappy():
     def game_over(self):
         self.screen.blit(self.frozen_screen, (0, 0))
         self.screen.blit(self.game_over_image, (250, 200))
+
+    def run(self):
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    return "quit"
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if self.health > 0:
+                        self.bird.move()
+                    else:
+                        return "menu"
+
+            self.update()
+            self.clock.tick(60)

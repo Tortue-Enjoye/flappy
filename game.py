@@ -1,28 +1,27 @@
+
 import pygame
 
 from flappy import Flappy
-
+from menu import Menu
 
 class Game:
     def __init__(self):
         pygame.init()
         self.screen = pygame.display.set_mode((800, 600))
-        self.running = True
         self.clock = pygame.time.Clock()
-        self.flap = Flappy(self.screen,self.clock)
-
 
     def run(self):
-        while self.running:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    self.running = False
+        while True:
+            menu = Menu(self.screen, self.clock)
+            if not menu.run():
+                break
 
-                if event.type == pygame.MOUSEBUTTONDOWN:
-                    self.flap.bird.move()
+            flap = Flappy(self.screen, self.clock)
+            result = flap.run()
 
-            self.flap.update()
-            self.clock.tick(60)
+            if result == "quit":
+                break
 
         pygame.quit()
 
+        pygame.quit()
