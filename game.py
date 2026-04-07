@@ -26,7 +26,7 @@ class Game:
         while True:
             if current == "menu":
                 result = Menu(self.screen, self.clock).run()
-                if result:
+                if result == True:
                     current = "game"
                 elif result == "score":
                     current = "score"

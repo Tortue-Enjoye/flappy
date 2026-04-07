@@ -30,4 +30,4 @@ class Bird():
 
         if self.y > 530:
             self.y = 529
-            self.velocity = -15*0.7
+            self.velocity = -14*0.7

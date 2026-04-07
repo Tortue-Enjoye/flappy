@@ -24,6 +24,7 @@ class Menu:
 
     def run(self):
         while True:
+            mouse_pos = pygame.mouse.get_pos()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     return False
@@ -35,16 +36,14 @@ class Menu:
                     if self.score_rect.collidepoint(event.pos):
                         return 'score'
 
-            self.draw()
+            self.draw(mouse_pos)
 
             self.clock.tick(60)
 
-    def draw(self):
+    def draw(self,mouse_pos):
 
         self.screen.fill((144, 213, 255))
         self.timer_anim += 1
-
-        mouse_pos = pygame.mouse.get_pos()
 
         # Titre
         title = self.font.render("Flappy Bird", True, (0, 76, 153))

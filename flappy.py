@@ -15,7 +15,7 @@ class Flappy():
         self.clock = clock
 
         # Gestion joueur
-        self.bird_co = (0, 0)
+        self.bird_co = (100, 0)
         self.bird = Bird(self.bird_co)
         self.c_cooldown = 60
 
