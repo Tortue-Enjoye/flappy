@@ -164,6 +164,12 @@ class Flappy():
                         self.bird.move()
                     else:
                         return "menu"
+                elif event.type == pygame.KEYDOWN: # Ajout de la touche espace pour les sauts
+                    if event.key == pygame.K_SPACE:
+                        if self.health > 0:
+                            self.bird.move()
+                        else:
+                            return "menu"
 
             self.update()
             self.clock.tick(60)
