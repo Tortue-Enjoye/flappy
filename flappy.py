@@ -1,6 +1,7 @@
 import pygame
 
 import random
+from collections import deque
 from utils import resource_path
 
 
@@ -23,11 +24,14 @@ class Flappy():
         self.pipe_contener = []
         self.pipe_timer = 0
         self.pipe_interval = 90
+        self.pipe_contener = deque()
+
 
         # Gestion des nuages
         self.cloud_contener = []
         self.cloud_timer = 0
         self.interval = random.randint(90, 120)
+        self.cloud_contener = deque()
 
         # Gestion de la vie
         self.health = 3
@@ -39,13 +43,22 @@ class Flappy():
         self.speed = 5
         self.game_over_image = pygame.image.load(resource_path('assets/images/GameOver.png'))
         self.game_over_image = pygame.transform.scale(self.game_over_image, (300, 150))
-        self.frozen_screen = self.screen.copy()
+        self.frozen_screen = None
 
         # Gestion du score
         self.score = 0
         self.score_font = pygame.font.Font(resource_path("assets/fonts/JetBrainsMono-Bold.ttf"), 48)
         self.scores = Scoreboard(self.screen,self.clock).load_scores()
+        if self.scores == []:
+            self.scores.append(0)
+
         self.score_font2 = pygame.font.Font(resource_path("assets/fonts/NotoEmoji-Bold.ttf"),32)
+        self.text_c = self.score_font2.render("👑", True, (0, 76, 153))
+        self._cached_score = -1
+        self._cached_score_surface = None
+        self._cached_best = -1
+        self._cached_best_surface = None
+
 
 
 
@@ -106,12 +119,12 @@ class Flappy():
                     self.speed += 1
                     self.pipe_interval = int(90 * (5 / self.speed))
 
-        for pipe in self.pipe_contener:
             pipe.update(self.speed)
             self.screen.blit(pipe.image, (pipe.x, pipe.y))
 
         # Supprimer les tuyaux sortis de l'écran
-        self.pipe_contener = [p for p in self.pipe_contener if p.x > -200]
+        while self.pipe_contener and self.pipe_contener[0].x <= -200:
+            self.pipe_contener.popleft()
 
     def update_cloud(self):
         self.cloud_timer += 1
@@ -119,17 +132,15 @@ class Flappy():
             self.interval = random.randint(90, 120)
             y = random.randint(0, 250)
             width = random.randint(150, 200)
-            height = random.randint(50, 100)
             self.cloud_timer = 0
             self.cloud_contener.append(Cloud(800,y,width,100))
-
 
         for cloud in self.cloud_contener:
             cloud.update(self.speed)
             self.screen.blit(cloud.image, (cloud.x, cloud.y))
 
-        self.cloud_contener = [c for c in self.cloud_contener if c.x > -200]
-
+        while self.cloud_contener and self.cloud_contener[0].x <= -200:
+            self.cloud_contener.popleft()
 
     def collision(self):
         for pipe in self.pipe_contener:
@@ -154,17 +165,25 @@ class Flappy():
         self.screen.blit(text, (400 - text.get_width() // 2, 370))
 
     def draw_score(self):
-        text = self.score_font.render(str(self.score), True, (0, 76, 153))
-        self.screen.blit(text, (50-text.get_width() // 2, 30))
 
-        #Meilleur score
-        text_c = self.score_font2.render("👑", True, (0, 76, 153))
-        self.screen.blit(text_c,(150+text_c.get_width() // 2, 43))
-        if self.scores[0] > self.score:
-            text = self.score_font.render(str(self.scores[0]), True, (0, 76, 153))
-            self.screen.blit(text,(200+text.get_width() // 2, 30))
-        else :
-            self.screen.blit(text, (200 - text.get_width() // 2, 30))
+
+        best = max(self.scores[0], self.score)
+
+        # Score actuel
+        if self.score != self._cached_score:
+            self._cached_score = self.score
+            self._cached_score_surface = self.score_font.render(str(self.score), True, (0, 76, 153))
+        self.screen.blit(self._cached_score_surface, (50 - self._cached_score_surface.get_width() // 2, 30))
+
+        # Meilleur score
+        if best != self._cached_best:
+            self._cached_best = best
+            self._cached_best_surface = self.score_font.render(str(best), True, (0, 76, 153))
+        self.screen.blit(self._cached_best_surface, (200 + self._cached_best_surface.get_width() // 2, 30))
+
+        # Couronne
+        self.screen.blit(self.text_c, (150 + self.text_c.get_width() // 2, 43))
+
 
 
     def run(self):
