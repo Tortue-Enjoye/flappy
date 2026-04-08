@@ -28,6 +28,7 @@ class Menu:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     return False
+
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if self.play_rect.collidepoint(event.pos):
                         return True

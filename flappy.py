@@ -27,6 +27,7 @@ class Flappy():
         # Gestion des nuages
         self.cloud_contener = []
         self.cloud_timer = 0
+        self.interval = random.randint(90, 120)
 
         # Gestion de la vie
         self.health = 3
@@ -43,6 +44,9 @@ class Flappy():
         # Gestion du score
         self.score = 0
         self.score_font = pygame.font.Font(resource_path("assets/fonts/JetBrainsMono-Bold.ttf"), 48)
+        self.scores = Scoreboard(self.screen,self.clock).load_scores()
+        self.score_font2 = pygame.font.Font(resource_path("assets/fonts/NotoEmoji-Bold.ttf"),32)
+
 
 
     def update(self):
@@ -110,14 +114,13 @@ class Flappy():
         self.pipe_contener = [p for p in self.pipe_contener if p.x > -200]
 
     def update_cloud(self):
-        interval = random.randint(90, 120)
         self.cloud_timer += 1
-        if self.cloud_timer >= interval:
+        if self.cloud_timer >= self.interval:
+            self.interval = random.randint(90, 120)
             y = random.randint(0, 250)
             width = random.randint(150, 200)
             height = random.randint(50, 100)
             self.cloud_timer = 0
-            self.cloud_contener.append(Cloud(800,y,width,100))
             self.cloud_contener.append(Cloud(800,y,width,100))
 
 
@@ -153,6 +156,16 @@ class Flappy():
     def draw_score(self):
         text = self.score_font.render(str(self.score), True, (0, 76, 153))
         self.screen.blit(text, (50-text.get_width() // 2, 30))
+
+        #Meilleur score
+        text_c = self.score_font2.render("👑", True, (0, 76, 153))
+        self.screen.blit(text_c,(150+text_c.get_width() // 2, 43))
+        if self.scores[0] > self.score:
+            text = self.score_font.render(str(self.scores[0]), True, (0, 76, 153))
+            self.screen.blit(text,(200+text.get_width() // 2, 30))
+        else :
+            self.screen.blit(text, (200 - text.get_width() // 2, 30))
+
 
     def run(self):
         while True:
