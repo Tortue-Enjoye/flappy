@@ -53,7 +53,7 @@ class Flappy():
             self.scores.append(0)
 
         self.score_font2 = pygame.font.Font(resource_path("assets/fonts/NotoEmoji-Bold.ttf"),32)
-        self.text_c = self.score_font2.render("👑", True, (0, 76, 153))
+        self.text_c = self.score_font2.render("👑", True, (239, 191, 4))
         self._cached_score = -1
         self._cached_score_surface = None
         self._cached_best = -1
@@ -165,8 +165,6 @@ class Flappy():
         self.screen.blit(text, (400 - text.get_width() // 2, 370))
 
     def draw_score(self):
-
-
         best = max(self.scores[0], self.score)
 
         # Score actuel
@@ -178,7 +176,7 @@ class Flappy():
         # Meilleur score
         if best != self._cached_best:
             self._cached_best = best
-            self._cached_best_surface = self.score_font.render(str(best), True, (0, 76, 153))
+            self._cached_best_surface = self.score_font.render(str(best), True, (239, 191, 4))
         self.screen.blit(self._cached_best_surface, (200 + self._cached_best_surface.get_width() // 2, 30))
 
         # Couronne
