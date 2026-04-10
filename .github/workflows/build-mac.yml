@@ -1,0 +1,28 @@
+name: Build macOS
+
+on: push
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Installer les dépendances
+        run: pip install pyinstaller pygame
+
+      - name: Compiler
+        run: |
+          pyinstaller --onefile --windowed \
+            --add-data "assets:assets" \
+            --name "FlappyBirdMac" main.py
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: FlappyBirdMac-app
+          path: dist/
