@@ -11,7 +11,7 @@ from cloud import Cloud
 from scoreboard import Scoreboard
 
 class Flappy():
-    def __init__(self,screen,clock):
+    def __init__(self,screen,clock,life):
         self.screen = screen
         self.clock = clock
 
@@ -34,8 +34,11 @@ class Flappy():
         self.cloud_contener = deque()
 
         # Gestion de la vie
-        self.health = 3
+        self.health_origine = life
+        self.health = life
         self.health_image = pygame.image.load(resource_path('assets/images/health.png'))
+        self.health_hard = pygame.image.load(resource_path('assets/images/hard.png'))
+        self.health_hard = pygame.transform.scale(self.health_hard, (50, 45))
         self.health_image = pygame.transform.scale(self.health_image, (50, 45))
 
         # Gestion jeu
@@ -82,7 +85,10 @@ class Flappy():
 
             self.collision()
 
-            self.health_bar()
+            if self.health_origine == 3:
+                self.health_bar(self.health_image,0)
+            else:
+                self.health_bar(self.health_hard,2)
 
             self.draw_score()
 
@@ -152,10 +158,12 @@ class Flappy():
                     self.frozen_screen = self.screen.copy()
                     Scoreboard.save_score(self.score)
 
-    def health_bar(self):
-        for i in range (0,self.health):
-            self.screen.blit(self.health_image,(625+i*55,20))
-
+    def health_bar(self,health_image,j):
+        if j == 0:
+            for i in range (0,self.health):
+                self.screen.blit(health_image,(625+i*55,20))
+        else:
+            self.screen.blit(health_image, (625 + j * 55, 20))
 
     def game_over(self):
         self.screen.blit(self.frozen_screen, (0, 0))
@@ -203,7 +211,7 @@ class Flappy():
         self.cloud_contener = deque()
 
         # Gestion de la vie
-        self.health = 3
+        self.health = self.health_origine
         self.health_image = pygame.image.load(resource_path('assets/images/health.png'))
         self.health_image = pygame.transform.scale(self.health_image, (50, 45))
 
@@ -244,6 +252,8 @@ class Flappy():
                             self.bird.move()
                         else:
                             return "menu"
+                    elif event.key == pygame.K_ESCAPE:
+                        return "menu"
                     if event.key == pygame.K_r:
                         self.reset()
 

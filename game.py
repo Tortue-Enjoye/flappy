@@ -19,22 +19,35 @@ class Game:
         pygame.display.set_caption("Flappy Bird")
         self.screen = pygame.display.set_mode((800, 600))
         self.clock = pygame.time.Clock()
+        self.lives = 3
+        self.menu = Menu(self.screen, self.clock)
 
     def run(self):
         current = "menu"
 
         while True:
             if current == "menu":
-                result = Menu(self.screen, self.clock).run()
-                if result == True:
+                result = self.menu.run()
+                if result == True or result == 'hard':
+                    self.lives = 1 if result == 'hard' else 3
                     current = "game"
+
                 elif result == "score":
                     current = "score"
+
+                elif result == "hard":
+                    if self.lives == 3:
+                        self.lives = 1
+                    else:
+                        self.lives = 3
+                    current = "menu"
+
+
                 else:
                     break
 
             elif current == "game":
-                result = Flappy(self.screen, self.clock).run()
+                result = Flappy(self.screen, self.clock,self.lives).run()
                 if result == "quit":
                     break
                 else:

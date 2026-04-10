@@ -16,11 +16,18 @@ class Menu:
         self.image_bird_inverted = pygame.transform.flip(self.image_bird, True, False)
         self.timer_anim = 0
 
+        self.image_hard = pygame.image.load(resource_path('assets/images/health.png'))
+        self.image_hard_origine = pygame.image.load(resource_path('assets/images/health.png'))
+        self.image_hard2_origine = pygame.image.load(resource_path('assets/images/hard.png'))
+        self.hardcore = False
+
+
         self.image_footer = pygame.image.load(resource_path('assets/images/cloud_footer.png'))
 
         self.play_rect = pygame.Rect(0, 0, 0, 0)
         self.score_rect = pygame.Rect(0, 0, 0, 0)
         self.quit_rect = pygame.Rect(0, 0, 0, 0)
+        self.hard_rect = pygame.Rect(690, 495, 70, 65)
 
     def run(self):
         while True:
@@ -31,15 +38,17 @@ class Menu:
 
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if self.play_rect.collidepoint(event.pos):
-                        return True
+                        return 'hard' if self.hardcore else True
                     if self.quit_rect.collidepoint(event.pos):
                         return False
                     if self.score_rect.collidepoint(event.pos):
                         return 'score'
+                    if self.hard_rect.collidepoint(event.pos):
+                        self.hardcore = not self.hardcore
 
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_SPACE:
-                        return True
+                        return 'hard' if self.hardcore else True
 
 
 
@@ -84,8 +93,10 @@ class Menu:
         self.quit_rect = quit_text.get_rect(center=(400, 390))
         self.screen.blit(quit_text, self.quit_rect)
 
+        # Footer
         self.screen.blit(self.image_footer, (-20, 300))
 
+        # Bird rotate
         if (self.timer_anim // 45) % 2 == 0:
             self.draw_bird(self.image_bird,0,0,0)
             self.draw_bird(self.image_bird_inverted,0,690,0)
@@ -93,6 +104,29 @@ class Menu:
         else :
             self.draw_bird(self.image_bird,45,-10,0)
             self.draw_bird(self.image_bird_inverted,-45,670,0)
+
+        # Hardcore mode
+        if self.hardcore == False:
+            if self.hard_rect.collidepoint(mouse_pos):
+                self.image_hard = self.image_hard_origine
+                self.image_hard = pygame.transform.scale(self.image_hard, (70, 65))
+                self.screen.blit(self.image_hard, (690,495))
+            else:
+                self.image_hard = self.image_hard_origine
+                self.image_hard = pygame.transform.scale(self.image_hard_origine, (50, 45))
+                self.screen.blit(self.image_hard, (700, 500))
+
+        elif self.hardcore == True:
+            if self.hard_rect.collidepoint(mouse_pos):
+                self.image_hard = self.image_hard2_origine
+                self.image_hard = pygame.transform.scale(self.image_hard2_origine, (70, 65))
+                self.screen.blit(self.image_hard, (690, 495))
+            else:
+                self.image_hard = self.image_hard2_origine
+                self.image_hard = pygame.transform.scale(self.image_hard2_origine, (50, 45))
+                self.screen.blit(self.image_hard, (700, 500))
+
+
 
         pygame.display.flip()
 
