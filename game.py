@@ -4,6 +4,7 @@ import pygame
 from flappy import Flappy
 from menu import Menu
 from scoreboard import Scoreboard
+from scoreboardHard import ScoreboardHard
 from utils import resource_path
 
 
@@ -32,8 +33,11 @@ class Game:
                     self.lives = 1 if result == 'hard' else 3
                     current = "game"
 
-                elif result == "score":
-                    current = "score"
+
+                elif result == "score" or result == "score_hard":
+                    current = "score_hard" if result == "score_hard" else "score"
+
+
 
                 elif result == "hard":
                     if self.lives == 3:
@@ -55,6 +59,12 @@ class Game:
 
             elif current == "score":
                 result = Scoreboard(self.screen, self.clock).run()
+                if result == "quit":
+                    break
+                else:
+                    current = "menu"
+            elif current == "score_hard":
+                result = ScoreboardHard(self.screen, self.clock).run()
                 if result == "quit":
                     break
                 else:

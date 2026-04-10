@@ -42,7 +42,7 @@ class Menu:
                     if self.quit_rect.collidepoint(event.pos):
                         return False
                     if self.score_rect.collidepoint(event.pos):
-                        return 'score'
+                        return 'score_hard' if self.hardcore else 'score'
                     if self.hard_rect.collidepoint(event.pos):
                         self.hardcore = not self.hardcore
 

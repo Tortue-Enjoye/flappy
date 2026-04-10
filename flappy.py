@@ -9,6 +9,7 @@ from bird import Bird
 from pipe import Pipe
 from cloud import Cloud
 from scoreboard import Scoreboard
+from scoreboardHard import ScoreboardHard
 
 class Flappy():
     def __init__(self,screen,clock,life):
@@ -51,7 +52,10 @@ class Flappy():
         # Gestion du score
         self.score = 0
         self.score_font = pygame.font.Font(resource_path("assets/fonts/JetBrainsMono-Bold.ttf"), 48)
-        self.scores = Scoreboard(self.screen,self.clock).load_scores()
+        if self.health_origine == 3:
+            self.scores = Scoreboard(self.screen, self.clock).load_scores()
+        else:
+            self.scores = ScoreboardHard(self.screen, self.clock).load_scores()
         if self.scores == []:
             self.scores.append(0)
 
@@ -156,7 +160,10 @@ class Flappy():
                 self.c_cooldown = 0
                 if self.health == 0:
                     self.frozen_screen = self.screen.copy()
-                    Scoreboard.save_score(self.score)
+                    if self.health_origine == 3:
+                        Scoreboard.save_score(self.score)
+                    else:
+                        ScoreboardHard.save_score(self.score)
 
     def health_bar(self,health_image,j):
         if j == 0:
@@ -225,7 +232,11 @@ class Flappy():
         # Gestion du score
         self.score = 0
         self.score_font = pygame.font.Font(resource_path("assets/fonts/JetBrainsMono-Bold.ttf"), 48)
-        self.scores = Scoreboard(self.screen, self.clock).load_scores()
+        if self.health_origine == 3:
+            self.scores = Scoreboard(self.screen, self.clock).load_scores()
+        else:
+            self.scores = ScoreboardHard(self.screen, self.clock).load_scores()
+
         if self.scores == []:
             self.scores.append(0)
 
