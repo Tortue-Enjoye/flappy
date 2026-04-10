@@ -183,6 +183,50 @@ class Flappy():
         self.screen.blit(self.text_c, (150 + self.text_c.get_width() // 2, 43))
 
 
+    def reset(self):
+
+        # Gestion joueur
+        self.bird_co = (100, 0)
+        self.bird = Bird(self.bird_co)
+        self.c_cooldown = 60
+
+        # Gestion tuyau
+        self.pipe_contener = []
+        self.pipe_timer = 0
+        self.pipe_interval = 90
+        self.pipe_contener = deque()
+
+        # Gestion des nuages
+        self.cloud_contener = []
+        self.cloud_timer = 0
+        self.interval = random.randint(90, 120)
+        self.cloud_contener = deque()
+
+        # Gestion de la vie
+        self.health = 3
+        self.health_image = pygame.image.load(resource_path('assets/images/health.png'))
+        self.health_image = pygame.transform.scale(self.health_image, (50, 45))
+
+        # Gestion jeu
+        self.gravity = 0.5
+        self.speed = 5
+        self.game_over_image = pygame.image.load(resource_path('assets/images/GameOver.png'))
+        self.game_over_image = pygame.transform.scale(self.game_over_image, (300, 150))
+        self.frozen_screen = None
+
+        # Gestion du score
+        self.score = 0
+        self.score_font = pygame.font.Font(resource_path("assets/fonts/JetBrainsMono-Bold.ttf"), 48)
+        self.scores = Scoreboard(self.screen, self.clock).load_scores()
+        if self.scores == []:
+            self.scores.append(0)
+
+        self.score_font2 = pygame.font.Font(resource_path("assets/fonts/NotoEmoji-Bold.ttf"), 32)
+        self.text_c = self.score_font2.render("👑", True, (239, 191, 4))
+        self._cached_score = -1
+        self._cached_score_surface = None
+        self._cached_best = -1
+        self._cached_best_surface = None
 
     def run(self):
         while True:
@@ -200,6 +244,8 @@ class Flappy():
                             self.bird.move()
                         else:
                             return "menu"
+                    if event.key == pygame.K_r:
+                        self.reset()
 
             self.update()
             self.clock.tick(60)

@@ -37,6 +37,13 @@ class Menu:
                     if self.score_rect.collidepoint(event.pos):
                         return 'score'
 
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_SPACE:
+                        return True
+
+
+
+
             self.draw(mouse_pos)
 
             self.clock.tick(60)
