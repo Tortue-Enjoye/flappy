@@ -115,7 +115,11 @@ class Flappy():
             self.pipe_timer = 0
 
             gap = 325
-            pipe_y = random.randint(0, 250)
+            if self.speed < 20:
+                pipe_y = random.randint(0, 250)
+            else:
+                pipe_y = random.randint(75, 175)
+
 
             self.pipe_contener.append(Pipe(800, pipe_y-gap, 75, 400,180))  # collé en haut
             self.pipe_contener.append(Pipe(800, pipe_y+gap, 75, 400,0))  # collé en bas
