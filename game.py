@@ -13,7 +13,8 @@ class Game:
         pygame.init()
 
         import ctypes
-        ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID("flappy.bird.game")
+        if hasattr(ctypes, 'windll'):
+            ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID("flappy.bird.game")
 
         icon = pygame.image.load(resource_path("assets/images/cloud.png"))
         pygame.display.set_icon(icon)
